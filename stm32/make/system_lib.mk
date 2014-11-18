@@ -54,7 +54,7 @@ ifeq ($(VARIANT),stm32f334nucleo)
 SYSTEM_TYPE = stm32f3
 SYSTEM_OBJS += \
 	startup_stm32f334xx.o \
-	system_stm32f3xx.o
+	system_stm32f334xx.o
 endif
 
 SYSTEM_OBJS += \
