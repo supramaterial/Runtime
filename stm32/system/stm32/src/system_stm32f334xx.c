@@ -39,7 +39,7 @@
 #define VECT_TAB_OFFSET     0x0
 
 
-uint32_t SystemCoreClock = 8000000;
+uint32_t SystemCoreClock = 64000000;
 
 
 /* Set clock configuration to Reset state, disable all
@@ -111,13 +111,48 @@ void SystemInit(void) {
  * the AHB prescaler or the APB2 prescaler.
  */
 
-static void SetSysClock(void) {
+void SystemSetSysClock(void) {
 
     /* Wait until HSI is ready. */
     while ((RCC->CR & RCC_CR_HSIRDY) == 0)
         ;
 
-    /* XXX WIP */
+    /* Enable the HSI */
+    RCC->CFGR &= ~RCC_CFGR_SW;
+    RCC->CFGR |= RCC_CFGR_SW_HSI;
+
+    /* HCLK = SYSCLK / 1 */
+    RCC->CFGR |= RCC_CFGR_HPRE_DIV1;
+    /* PCLK1 = HCLK / 1 */
+    RCC->CFGR |= RCC_CFGR_PPRE1_DIV1;
+    /* PCLK2 = HCLK / 2 */
+    RCC->CFGR |= RCC_CFGR_PPRE2_DIV2;
+
+    /* PLLMUL = HSI * 8 */
+    RCC->CFGR &= ~RCC_CFGR_PLLMUL;
+    RCC->CFGR |= RCC_CFGR_PLLMUL8;
+
+    /* Enable the main PLL */
+    RCC->CR |= RCC_CR_PLLON;
+
+    /* Wait till the main PLL is ready */
+    while((RCC->CR & RCC_CR_PLLRDY) == 0)
+        ;
+
+    /* Configure Flash
+    *    Prefetch buffer enabled,
+    *    Half cycle access disabled,
+    *    Latency 2 wait states (48 MHz < SYSCLK < 72 MHz)
+    */
+    FLASH->ACR = FLASH_ACR_PRFTBE | !FLASH_ACR_HLFCYA | FLASH_ACR_LATENCY_2;
+
+    /* Select the main PLL as system clock source */
+    RCC->CFGR &= ~RCC_CFGR_SW;
+    RCC->CFGR |= RCC_CFGR_SW_PLL;
+
+    /* Wait till the main PLL is used as system clock source */
+    while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS ) != RCC_CFGR_SWS_PLL)
+        ;
 }
 
 

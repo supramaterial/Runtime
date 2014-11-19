@@ -298,6 +298,7 @@ void Reset_Handler(void) {
 
     /* Configure PLL, AHB/APBx prescalers and Flash settings. */
     SystemInit();
+    SystemSetSysClock();
 
     /* Do NOT call C++ static constructors */
     // C++ static constructors would normally be initialised from here
