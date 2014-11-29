@@ -113,6 +113,10 @@ void SystemInit(void) {
 
 void SystemSetSysClock(void) {
 
+    /* Set HSI_TRIM to 16 */
+    RCC->CR &= ~RCC_CR_HSITRIM;
+    RCC->CR |= RCC_CR_HSITRIM_4;
+
     /* Wait until HSI is ready. */
     while ((RCC->CR & RCC_CR_HSIRDY) == 0)
         ;
@@ -128,9 +132,14 @@ void SystemSetSysClock(void) {
     /* PCLK2 = HCLK / 2 */
     RCC->CFGR |= RCC_CFGR_PPRE2_DIV2;
 
-    /* PLLMUL = HSI * 8 */
+    /* RCC_CFGR_PLLSRC_HSI_DIV2 is already
+     * selected by reseting the bit in the
+     * SystemInit function.
+     */
+
+    /* PLLMUL = (HSI / 2) * 16  = 64 MHz */
     RCC->CFGR &= ~RCC_CFGR_PLLMUL;
-    RCC->CFGR |= RCC_CFGR_PLLMUL8;
+    RCC->CFGR |= RCC_CFGR_PLLMUL16;
 
     /* Enable the main PLL */
     RCC->CR |= RCC_CR_PLLON;
