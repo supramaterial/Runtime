@@ -80,6 +80,16 @@ typedef uint16_t preg16_t;
 #define GPIO_AFRx_AFRx0_AF5            ((uint32_t)0x00000005)
 #define GPIO_AFRx_AFRx0_AF6            ((uint32_t)0x00000006)
 #define GPIO_AFRx_AFRx0_AF7            ((uint32_t)0x00000007)
+#define GPIO_AFRx_AFRx0_AF8            ((uint32_t)0x00000008)
+#define GPIO_AFRx_AFRx0_AF9            ((uint32_t)0x00000009)
+#define GPIO_AFRx_AFRx0_AF10           ((uint32_t)0x0000000A)
+#define GPIO_AFRx_AFRx0_AF11           ((uint32_t)0x0000000B)
+#define GPIO_AFRx_AFRx0_AF12           ((uint32_t)0x0000000C)
+#define GPIO_AFRx_AFRx0_AF13           ((uint32_t)0x0000000D)
+#define GPIO_AFRx_AFRx0_AF14           ((uint32_t)0x0000000E)
+#define GPIO_AFRx_AFRx0_AF15           ((uint32_t)0x0000000F)
+
+/* XXX TODO Fix or remove the section below */
 #define GPIO_AFRx_AFRx1_AF0            ((uint32_t)0x00000000)
 #define GPIO_AFRx_AFRx1_AF1            ((uint32_t)0x00000010)
 #define GPIO_AFRx_AFRx1_AF2            ((uint32_t)0x00000020)
