@@ -1,0 +1,3 @@
+Check if enabling the PLL and increasing the frequency
+of SYSCLK and children clocks does not affect the required
+configuration of the SPI clock.
