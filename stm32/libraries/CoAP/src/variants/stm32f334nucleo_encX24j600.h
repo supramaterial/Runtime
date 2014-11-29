@@ -24,8 +24,8 @@
 # define _STM32F334NUCLEO_ENCX24J600_H_
 
 # define ENCX24J600_SPI    SPI1struct /* XXX Move to the constructor */
-# define ENCX24J600_CS_PIN 2
-# define ENCX24J600_INT_PIN 22
+# define ENCX24J600_CS_PIN 22
+# define ENCX24J600_INT_PIN 23
 
 # include <encX24j600/ENCX24J600Class.h>
 
