@@ -117,6 +117,7 @@ void pinMode(pin_t pin, const enum pin_mode mode) {
         break;
     }
     case OUTPUT:
+    case ALTERNATE:
         break;
     }
 
@@ -126,6 +127,14 @@ void pinMode(pin_t pin, const enum pin_mode mode) {
         register uint32_t moder = GPIOPIN[pin].gpio_port->MODER;
         moder |=  (GPIO_MODER_MODER0_0 << pin_shift);
         moder &= ~(GPIO_MODER_MODER0_1 << pin_shift);
+        GPIOPIN[pin].gpio_port->MODER = moder;
+        break;
+    }
+    case ALTERNATE: {
+        /* Output mode:  mode register bits 10 */
+        register uint32_t moder = GPIOPIN[pin].gpio_port->MODER;
+        moder &= ~(GPIO_MODER_MODER0_0 << pin_shift);
+        moder |=  (GPIO_MODER_MODER0_1 << pin_shift);
         GPIOPIN[pin].gpio_port->MODER = moder;
         break;
     }

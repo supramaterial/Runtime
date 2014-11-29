@@ -316,6 +316,7 @@ enum pin_mode {
     INPUT_PULLUP   = 1,
     INPUT_PULLDOWN = 2,         /* ELL-i extension */
     OUTPUT         = 3,
+    ALTERNATE      = 4,         /* ELL-i extension */
 };
 
 #define PIN_MODE_NUMBER (OUTPUT+1)
