@@ -64,11 +64,17 @@ void coap_input(uint8_t coap_data[], uint16_t coap_data_len) {
         uint32_t option_number = 0;
         uint8_t *option_bytes = content_start;
 
-        while (option_bytes < packet_end && option_bytes[0] != COAP_OPTION_PAYLOAD) {
+        while (option_bytes < packet_end) {
             uint8_t option_byte   = option_bytes[0];
+
+            if (option_byte == COAP_OPTION_PAYLOAD) {
+                option_bytes++;
+                break;
+            }
+
             int32_t option_delta  = coap_option_dl_value(option_byte >> 4,  &option_bytes);
             int32_t option_length = coap_option_dl_value(option_byte & 0xF, &option_bytes);
-            
+
             if (option_delta < 0 || option_length < 0) {
                 goto send_reset; // Message format error
             }
