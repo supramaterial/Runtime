@@ -29,6 +29,8 @@
 #include <netinet/arp.h>
 #include <netinet/util.h>
 
+#include <system_init.h>
+
 #ifndef DEBUG_WRITE
 # if 0
 #  define DEBUG_WRITE(...)
@@ -57,21 +59,20 @@ void eth_input(struct ether_header *const ether) {
 
     /*
      * Swap source and destination address for return packet.
+     * This is done by copying the original source address as
+     * destination, and by updating the source address with
+     * the local stored address. This local address is usually
+     * provided by the network controller.
      *
      * If the upper layers need the src/dst information, they
      * must be written with this swapping in mind.
      */
-    // XXX Check that the following produces optimal code.  Revise if not.
-    //     Write in assembler if needed.
-    register uint16_t d0 = ether->ether_addrs[0];
-    register uint16_t d1 = ether->ether_addrs[1];
-    register uint16_t d2 = ether->ether_addrs[2];
+    // XXX With the introduction of memcpy, this is not expected to
+    //     produce optimal code. Revise. Write in assembler if needed.
     ether->ether_addrs[0] = ether->ether_addrs[3];
     ether->ether_addrs[1] = ether->ether_addrs[4];
     ether->ether_addrs[2] = ether->ether_addrs[5];
-    ether->ether_addrs[3] = d0;
-    ether->ether_addrs[4] = d1;
-    ether->ether_addrs[5] = d2;
+    memcpy(ether->ether_shost, ether_local_address, ETHER_ADDR_LEN);
 
     /*
      * Pass to the upper layer
