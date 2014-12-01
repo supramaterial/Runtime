@@ -63,15 +63,10 @@ void eth_input(struct ether_header *const ether) {
      */
     // XXX Check that the following produces optimal code.  Revise if not.
     //     Write in assembler if needed.
-    register uint16_t d0 = ether->ether_addrs[0];
-    register uint16_t d1 = ether->ether_addrs[1];
-    register uint16_t d2 = ether->ether_addrs[2];
     ether->ether_addrs[0] = ether->ether_addrs[3];
     ether->ether_addrs[1] = ether->ether_addrs[4];
     ether->ether_addrs[2] = ether->ether_addrs[5];
-    ether->ether_addrs[3] = d0;
-    ether->ether_addrs[4] = d1;
-    ether->ether_addrs[5] = d2;
+    memcpy(ether->ether_shost, ether_local_address, ETHER_ADDR_LEN);
 
     /*
      * Pass to the upper layer
