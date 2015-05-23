@@ -19,6 +19,14 @@
 *.map
 *.hex
 *.lst
+*.bin
+
+# Tags
+*.tags
 
 # Build sketch
 stm32/build/sketch*
+
+# Build directories
+stm32/build/hardware*
+stm32/build/emulator*
